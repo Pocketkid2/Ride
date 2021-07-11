@@ -1,0 +1,10 @@
+# macOS Stuff
+.DS_Store
+
+# Eclipse Stuff
+.classpath
+.project
+.settings/
+
+# Binaries
+target/

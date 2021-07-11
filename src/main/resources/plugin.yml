@@ -1,0 +1,20 @@
+name: ${name}
+version: ${version}
+main: ${groupId}.${artifactId}.${name}Plugin
+
+description: ${description}
+api-version: 1.17
+author: ${author}
+depend: [ProtocolLib]
+
+commands:
+    ride:
+        description: Rides the mob you are looking at
+        usage: /ride
+        permission: ride.command
+        permission-message: You don't have permission for that!
+
+permissions:
+    ride.command:
+        description: Allows access to the /ride command
+        default: true
