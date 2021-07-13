@@ -1,7 +1,5 @@
 package com.github.pocketkid2.ride;
 
-import java.lang.reflect.InvocationTargetException;
-
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -56,17 +54,8 @@ public class RidePlugin extends JavaPlugin {
 
 					// Now, calculate the new velocity using the function below, and apply to the
 					// vehicle entity
-					vehicle.setVelocity(RidePlugin.getVelocityVector(vehicle.getVelocity(), player, side, forw));
-
-					// Also, send a packet to the player with the entity's direction
-					PacketContainer facing = new PacketContainer(PacketType.Play.Server.ENTITY_HEAD_ROTATION);
-					facing.getIntegers().write(0, vehicle.getEntityId());
-					facing.getFloat().write(0, player.getLocation().getYaw());
-					try {
-						pm.sendServerPacket(player, facing);
-					} catch (InvocationTargetException e) {
-						getLogger().warning("Couldn't send ENTITY_HEAD_ROTATION packet");
-					}
+					Vector vel = RidePlugin.getVelocityVector(vehicle.getVelocity(), player, side, forw);
+					vehicle.setVelocity(vel);
 				}
 			}
 		});
@@ -86,12 +75,13 @@ public class RidePlugin extends JavaPlugin {
 		// Create a new vector representing the direction of WASD
 		Vector mot = new Vector(forw * -1.0, 0, side);
 
-		// Turn to face the direction the player is facing
-		mot.rotateAroundY(Math.toRadians(player.getLocation().getYaw() * -1.0F + 90.0F));
-
-		// Now bring it back to a reasonable speed (0.2, reasonable default speed, can
-		// be configured)
-		mot.normalize().multiply(0.2F);
+		if (mot.length() > 0.0) {
+			// Turn to face the direction the player is facing
+			mot.rotateAroundY(Math.toRadians(player.getLocation().getYaw() * -1.0F + 90.0F));
+			// Now bring it back to a reasonable speed (0.2, reasonable default speed, can
+			// be configured)
+			mot.normalize().multiply(0.25F);
+		}
 
 		// Now, take this new horizontal direction velocity, and add it to what we
 		// already have (which will only be vertical velocity at this point.)
