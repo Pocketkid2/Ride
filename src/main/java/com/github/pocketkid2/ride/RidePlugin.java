@@ -56,6 +56,8 @@ public class RidePlugin extends JavaPlugin {
 					// vehicle entity
 					Vector vel = RidePlugin.getVelocityVector(vehicle.getVelocity(), player, side, forw);
 					vehicle.setVelocity(vel);
+					// Update entity head rotation
+					vehicle.setRotation(player.getEyeLocation().getYaw(), player.getEyeLocation().getPitch());
 				}
 			}
 		});
